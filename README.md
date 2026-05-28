@@ -15,13 +15,6 @@
 
 ---
 
-## Установка зависимостей
-
-```bash
-pip install numpy matplotlib networkx scipy
-```
-
----
 
 ## Запуск примеров
 
