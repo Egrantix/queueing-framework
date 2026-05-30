@@ -41,13 +41,9 @@ def run():
     col = engine.run(2000.0)
     
     calc = MetricsCalculator(col, 2000.0, net)
-    #pprint(net.graph(calc))
-    
-    col = engine.run(2000.0, clean_up=False)
-    calc = MetricsCalculator(col, 4000.0, net)
-    pprint(net.graph(calc))
-    # for nid in net.node_ids():
-    #     calc.print_report(nid)
+ 
+    for nid in net.node_ids():
+        calc.print_report(nid)
     
     Visualizer.plot_network_graph(net, calc.compute_all(),
                                   save_path='network_graph.png')

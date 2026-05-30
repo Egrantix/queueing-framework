@@ -20,7 +20,7 @@ def run():
         system_capacity=K,
         routing={'EXIT': 1.0}
     ))
-    net.add_source(Source('src', 'server', Exponential(lam)))
+    net.add_source(Source('src', ['server'], Exponential(lam)))
 
     engine = SimulationEngine(net, sim_time=5000.0, warmup_time=200.0, seed=42)
     col = engine.run()
