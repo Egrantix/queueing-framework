@@ -53,6 +53,15 @@ class QueueingNetwork:
                     f"Сумма вероятностей маршрутов узла '{node.node_id}' "
                     f"= {total_prob:.4f}, должна быть 1.0"
                 )
+                
+    def graph(self, metrics):
+        edges = {}
+        m = metrics.compute_all()
+        for node in self.nodes.values():
+            edges[node.node_id] = []
+            for dest, prob in node.routing.items():
+                edges[node.node_id].append((dest, prob))
+        return m, edges
 
     def __repr__(self) -> str:
         return (f"QueueingNetwork("

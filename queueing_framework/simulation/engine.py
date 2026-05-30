@@ -19,7 +19,7 @@ class SimulationEngine:
         seed: int = 42
     ):
         self.network = network
-        self.sim_time = sim_time       # время окончания моделирования
+        self.sim_time = 0       # время окончания моделирования
         self.warmup_time = warmup_time # период прогрева (не учитывается в статистике)
 
         # генератор случайных чисел с фиксированным зерном
@@ -52,7 +52,7 @@ class SimulationEngine:
             node.busy_servers
         )
 
-    def _initialize(self) -> None:
+    def _initialize(self, clean_up: bool = True) -> None:
         """
         Инициализация: запланировать первое поступление
         от каждого источника и событие конца прогрева.
@@ -63,11 +63,11 @@ class SimulationEngine:
                 time=t,
                 priority=1,
                 event_type=EventType.ARRIVAL,
-                node_id=src.target_node_id,
+                node_id=random.choice(src.target_node_ids),
                 source_id=src.source_id
             ))
 
-        if self.warmup_time > 0:
+        if self.warmup_time > 0 and clean_up:
             self._schedule(Event(
                 time=self.warmup_time,
                 priority=0,
@@ -104,7 +104,7 @@ class SimulationEngine:
                 time=next_arrival,
                 priority=1,
                 event_type=EventType.ARRIVAL,
-                node_id=src.target_node_id,
+                node_id=random.choice(src.target_node_ids),
                 source_id=src.source_id
             ))
 
@@ -202,22 +202,33 @@ class SimulationEngine:
                 request=request
             ))
 
-    def run(self):
+    def run(self, sim_time: float = 0, clean_up: bool = True):
         """
         Запустить моделирование.
         Возвращает объект StatisticsCollector с данными.
         """
         from queueing_framework.statistics.collector import StatisticsCollector
-
-        self.collector = StatisticsCollector(
-            node_ids=self.network.node_ids(),
-            warmup_time=self.warmup_time
-        )
-
-        self._initialize()
+        
+        
+        if not clean_up:
+            self.sim_time += sim_time
+            print("Running simulation without clean-up. Previous statistics will be preserved.")
+        else:
+            self.sim_time = sim_time
+            print("Running simulation with clean-up. Previous statistics will be reset.")
+        if self.collector is None or clean_up:
+            self.collector = StatisticsCollector(
+                node_ids=self.network.node_ids(),
+                warmup_time=self.warmup_time
+            )
+        
+        self._initialize(clean_up=clean_up)
 
         # главный цикл симуляции
         while not self.calendar.is_empty():
+            if self.clock % 50 < 1e-2: 
+                print(f"Processing event at time {self.clock:.2f}, "
+                      f"events left: {len(self.calendar)}", end='\r')
             event = self.calendar.pop()
 
             if event.time > self.sim_time:
@@ -231,5 +242,5 @@ class SimulationEngine:
                 self._handle_service_end(event)
             elif event.event_type == EventType.WARMUP_END:
                 self.collector.notify_warmup_end(self.clock)
-
+        print(self.collector.arrivals)
         return self.collector
