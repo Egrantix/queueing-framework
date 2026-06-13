@@ -2,16 +2,17 @@
 Точка входа: запускает все примеры по очереди.
 """
 import sys
-from examples import mm1, mmn, mm1k, network_example
+from examples import mm1, mmn, mm1k, network_example, network_1000
 
 
 def main():
     examples = {
-        '1': ('M/M/1 — одноканальная система', mm1.run),
-        '2': ('M/M/n — многоканальная система', mmn.run),
-        '3': ('M/M/1/K — система с ограниченным буфером', mm1k.run),
-        '4': ('Сеть СМО — 3 узла', network_example.run),
-    }
+    '1': ('M/M/1 — одноканальная система', mm1.run),
+    '2': ('M/M/n — многоканальная система', mmn.run),
+    '3': ('M/M/1/K — система с ограниченным буфером', mm1k.run),
+    '4': ('Сеть СМО — 3 узла', network_example.run),
+    '5': ('Последовательная сеть — 1000 узлов', network_1000.run),  
+}
 
     print("\n╔══════════════════════════════════════════════╗")
     print("║  Библиотека моделирования сетей СМО           ║")
@@ -42,3 +43,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
