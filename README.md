@@ -1,7 +1,6 @@
 # Queueing Framework
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-educational-yellow)]()
 
 Библиотека дискретно-событийного моделирования сетей массового обслуживания (СМО), разработанная в рамках выпускной квалификационной работы по направлению «Программная инженерия».
