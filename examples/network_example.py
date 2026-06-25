@@ -38,7 +38,7 @@ def run():
     
     
     engine = SimulationEngine(net, sim_time=2000.0, warmup_time=20.0, seed=42)
-    col = engine.run(5000.0)
+    col = engine.run(2000.0)
     
     calc = MetricsCalculator(col, 2000.0, net)
  

@@ -1,8 +1,9 @@
 import numpy as np
+import random
 from queueing_framework.core.event import Event, EventType, EventQueue
 from queueing_framework.core.request import Request
 from queueing_framework.network.network import QueueingNetwork
-import random
+
 
 class SimulationEngine:
     """

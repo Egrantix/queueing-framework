@@ -8,7 +8,7 @@ from queueing_framework.core.node import ServiceNode, Source
 from queueing_framework.distributions.distributions import Exponential
 from queueing_framework.simulation.engine import SimulationEngine
 from queueing_framework.metrics.performance import MetricsCalculator
-
+from queueing_framework.visualization.plots import Visualizer
 
 def run():
     lam, mu, K = 6.0, 5.0, 5
@@ -34,6 +34,26 @@ def run():
     p_loss = p0 * rho**K
     print(f"Аналитика M/M/1/{K}: P_loss={p_loss:.4f}  ρ={rho:.4f}")
 
+    Visualizer.plot_queue_and_utilization(
+        col,
+        'server',
+        'M/M/1/K',
+        save_path='mm1k_queue.png'
+    )
+
+    Visualizer.plot_wait_histogram(
+        col,
+        'server',
+        'M/M/1/K',
+        save_path='mm1k_wait_histogram.png'
+    )
+
+    Visualizer.plot_network_graph(
+        net,
+        calc.compute_all(),
+        save_path='mm1k_network.png'
+    )
+    
 
 if __name__ == '__main__':
     run()

@@ -136,7 +136,8 @@ class Visualizer:
         for src in network.sources.values():
             src_label = f"[SRC]\n{src.source_id}"
             G.add_node(src_label)
-            G.add_edge(src_label, src.target_node_id)
+            for dest in src.target_node_ids:
+                G.add_edge(src_label, dest, weight=1.0)
             source_nodes.append(src_label)
 
         fig, ax = plt.subplots(figsize=(11, 6))

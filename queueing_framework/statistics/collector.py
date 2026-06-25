@@ -83,7 +83,6 @@ class StatisticsCollector:
         """Зафиксировать отказ (потерю заявки)."""
         if self._warmup_done:
             self.dropped[node_id] += 1
-            self.arrivals[node_id] += 1
 
     def record_service_end(
         self,
